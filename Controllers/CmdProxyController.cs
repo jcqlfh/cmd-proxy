@@ -22,11 +22,22 @@ public class CmdProxyController : ControllerBase
     [HttpPost]
     public IActionResult ExecCommand([FromBody] Command command)
     {
+
+        string result = string.Empty;
+
+        if(command.Value.Contains("restart"))
+             result = RunCommand("sudo reboot");
+        
+        return Ok(result);
+    }
+
+    private string RunCommand(string command)
+    {
         string result = "";
         using (System.Diagnostics.Process proc = new System.Diagnostics.Process())
         {
             proc.StartInfo.FileName = "/bin/bash";
-            proc.StartInfo.Arguments = "-c \" " + command.Value + " \"";
+            proc.StartInfo.Arguments = "-c \" " + command + " \"";
             proc.StartInfo.UseShellExecute = false;
             proc.StartInfo.RedirectStandardOutput = true;
             proc.StartInfo.RedirectStandardError = true;
@@ -37,7 +48,7 @@ public class CmdProxyController : ControllerBase
 
             proc.WaitForExit();
         }
-        return Ok(result);
+        return result;
     }
 }
 
