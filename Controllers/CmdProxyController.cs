@@ -24,9 +24,16 @@ public class CmdProxyController : ControllerBase
     {
 
         if(command.Value.Contains("restart"))
+        {
             RunCommand("sudo reboot");
+        }
+
         if(command.Value.Contains("backup"))
-            RunCommand($"sudo dd if=/dev/mmcblk0 of=/mnt/hd/media/Backups/raspberry.bkp/pipipi-{new DateOnly().ToString("yyyyMMdd")}.img");
+        {
+            var date = new DateOnly();
+            RunCommand($"sudo dd if=/dev/mmcblk0 of=/mnt/hd/media/Backups/raspberry.bkp/pipipi-{date.ToString("yyyyMMdd")}.img && touch pipipi-{date.ToString("yyyyMMdd")}.done");
+        }
+
         return Ok();
     }
 
