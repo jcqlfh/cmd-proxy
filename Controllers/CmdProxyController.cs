@@ -23,17 +23,15 @@ public class CmdProxyController : ControllerBase
     public IActionResult ExecCommand([FromBody] Command command)
     {
 
-        string result = string.Empty;
-
         if(command.Value.Contains("restart"))
-             result = RunCommand("sudo reboot");
-        
-        return Ok(result);
+            RunCommand("sudo reboot");
+        if(command.Value.Contains("backup"))
+            RunCommand("sudo dd if=/dev/mmcblk0 of=/mnt/hd/media/Backups/pipipi.img");
+        return Ok();
     }
 
-    private string RunCommand(string command)
+    private void RunCommand(string command)
     {
-        string result = "";
         using (System.Diagnostics.Process proc = new System.Diagnostics.Process())
         {
             proc.StartInfo.FileName = "/bin/bash";
@@ -42,13 +40,7 @@ public class CmdProxyController : ControllerBase
             proc.StartInfo.RedirectStandardOutput = true;
             proc.StartInfo.RedirectStandardError = true;
             proc.Start();
-
-            result += proc.StandardOutput.ReadToEnd();
-            result += proc.StandardError.ReadToEnd();
-
-            proc.WaitForExit();
         }
-        return result;
     }
 }
 
