@@ -30,8 +30,8 @@ public class CmdProxyController : ControllerBase
 
         if(command.Value.Contains("backup"))
         {
-            var date = new DateOnly();
-            RunCommand($"sudo dd if=/dev/mmcblk0 of=/mnt/hd/media/Backups/raspberry.bkp/pipipi-{date.ToString("yyyyMMdd")}.img && touch pipipi-{date.ToString("yyyyMMdd")}.done");
+            var filename = $"pipipi-{new DateOnly().ToString("yyyyMMdd")}";
+            RunCommand($"sudo dd if=/dev/mmcblk0 of=/mnt/hd/media/Backups/raspberry.bkp/{filename}.img && touch {filename}.done");
         }
 
         return Ok();
