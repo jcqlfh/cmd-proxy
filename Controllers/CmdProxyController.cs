@@ -31,7 +31,7 @@ public class CmdProxyController : ControllerBase
         if(command.Value.Contains("backup"))
         {
             var filename = $"pipipi-{DateTime.Today.ToString("yyyyMMdd")}";
-            RunCommand($"sudo dd if=/dev/mmcblk0 of=/mnt/hd/media/Backups/raspberry.bkp/{filename}.img && touch {filename}.done");
+            RunCommand($"sudo dd if=/dev/mmcblk0 of=/mnt/hd/media/Backups/raspberry.bkp/{filename}.img > {filename}.done");
         }
 
         return Ok();
